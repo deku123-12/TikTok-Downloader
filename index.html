@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>We are Legions - TikTok HD Downloader & Renderer</title>
+    <title>Sonic Save - TikTok HD Downloader & Renderer</title>
     <style>
         * {
             box-sizing: border-box;
@@ -61,6 +61,8 @@
         }
         .input-group {
             margin-bottom: 14px;
+            display: flex;
+            gap: 8px;
         }
         input[type="text"] {
             width: 100%;
@@ -71,6 +73,7 @@
             color: #fff;
             font-size: 14px;
             outline: none;
+            flex: 1;
         }
         input[type="text"]:focus {
             border-color: #ff3366;
@@ -93,6 +96,12 @@
         button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+        }
+        .btn-paste {
+            width: auto !important;
+            padding: 0 16px !important;
+            background: #374151 !important;
+            font-size: 14px !important;
         }
         .result-box {
             margin-top: 20px;
@@ -161,6 +170,7 @@
         
         <div class="input-group">
             <input type="text" id="videoUrl" placeholder="Paste TikTok video link here...">
+            <button type="button" class="btn-paste" id="pasteBtn" onclick="pasteClipboard()">📋 Paste</button>
         </div>
         <button id="actionBtn" onclick="fetchVideo()">Fetch Video</button>
 
@@ -190,5 +200,4 @@
 
     <script src="script.js"></script>
 </body>
-  </html>
-  
+</html>
