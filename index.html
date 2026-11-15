@@ -69,16 +69,14 @@
         }
         .stats-card {
             display: flex;
-            justify-content: space-around;
+            justify-content: center;
+            align-items: center;
             background: #0d0f18;
             border: 1px solid #2a2e43;
             padding: 10px;
             border-radius: 10px;
             margin-bottom: 15px;
             font-size: 12px;
-            color: #a5b4fc;
-        }
-        .stats-card span {
             font-weight: bold;
             color: #22c55e;
         }
@@ -242,11 +240,12 @@
     </div>
 
     <div class="container">
-        <h2 id="appTitle">TikTok HD Downloader</h2>
+        <h2 id="appTitle">Lim3rd TikTok HD Downloader</h2>
         <div class="subtitle" id="appSubtitle">Direct 1080p & Custom Renderer • By Lim3rd</div>
         
+        
         <div class="stats-card">
-            <div>Live Visitors: <span id="totalVisits">Loading...</span></div>
+            🟢 Server Status: Online & Secure
         </div>
 
         <div class="input-group">
@@ -296,34 +295,8 @@
         </div>
     </div>
 
-    <div class="footer">Created by Lim3rd &bull; Client-Side Engine</div>
+    <div class="footer">Created by Lim3rd &bull; using Client-Side Engine</div>
 
     <script src="script.js"></script>
-    <script>
-        async function updateVisitorCount() {
-            try {
-                const hasCounted = sessionStorage.getItem('global_counted');
-                let url = 'https://api.countapi.xyz/hit/deku123-tiktok/visits';
-                
-                if (hasCounted) {
-                    url = 'https://api.countapi.xyz/get/deku123-tiktok/visits';
-                }
-
-                const response = await fetch(url);
-                const data = await response.json();
-                
-                if (data && data.value !== undefined) {
-                    document.getElementById('totalVisits').innerText = data.value;
-                    if (!hasCounted) {
-                        sessionStorage.setItem('global_counted', 'true');
-                    }
-                }
-            } catch (err) {
-                document.getElementById('totalVisits').innerText = "Live";
-            }
-        }
-
-        updateVisitorCount();
-    </script>
 </body>
 </html>
