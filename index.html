@@ -67,7 +67,7 @@
             text-align: center;
             font-size: 12px;
             color: #8f95b2;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
         .stats-card {
             display: flex;
@@ -247,10 +247,8 @@
         <h2 id="appTitle">TikTok HD Downloader</h2>
         <div class="subtitle" id="appSubtitle">Direct 1080p & Custom Renderer • By Lim3rd</div>
         
-        <!-- Site Visitor Stats Card -->
         <div class="stats-card">
-            <div>Visits Today: <span id="visitsToday">1</span></div>
-            <div>Total Views: <span id="totalVisits">1</span></div>
+            <div>Live Visitors: <span id="totalVisits">Loading...</span></div>
         </div>
 
         <div class="input-group">
@@ -304,21 +302,30 @@
 
     <script src="script.js"></script>
     <script>
-        // Simple visitor counter simulation / local storage tracker
-        let visits = localStorage.getItem('sonic_total_visits') || 120;
-        let todayVisits = localStorage.getItem('sonic_today_visits') || 15;
-        
-        // Increment on fresh load per session
-        if (!sessionStorage.getItem('counted')) {
-            visits = parseInt(visits) + 1;
-            todayVisits = parseInt(todayVisits) + 1;
-            localStorage.setItem('sonic_total_visits', visits);
-            localStorage.setItem('sonic_today_visits', todayVisits);
-            sessionStorage.setItem('counted', 'true');
+        async function updateVisitorCount() {
+            try {
+                const hasCounted = sessionStorage.getItem('global_counted');
+                let url = 'https://api.countapi.xyz/hit/deku123-tiktok/visits';
+                
+                if (hasCounted) {
+                    url = 'https://api.countapi.xyz/get/deku123-tiktok/visits';
+                }
+
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data && data.value !== undefined) {
+                    document.getElementById('totalVisits').innerText = data.value;
+                    if (!hasCounted) {
+                        sessionStorage.setItem('global_counted', 'true');
+                    }
+                }
+            } catch (err) {
+                document.getElementById('totalVisits').innerText = "Live";
+            }
         }
 
-        document.getElementById('visitsToday').innerText = todayVisits;
-        document.getElementById('totalVisits').innerText = visits;
+        updateVisitorCount();
     </script>
 </body>
 </html>
