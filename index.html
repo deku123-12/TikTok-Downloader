@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>We are Legions - TikTok HD Downloader & Renderer</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #0d0f18;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .lang-bar {
+            width: 100%;
+            max-width: 420px;
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 12px;
+        }
+        select {
+            background: #171a29;
+            color: #fff;
+            border: 1px solid #2a2e43;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            outline: none;
+            cursor: pointer;
+        }
+        .container {
+            width: 100%;
+            max-width: 420px;
+            background: #171a29;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            border: 1px solid #2a2e43;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 6px;
+            font-size: 24px;
+            color: #ff3366;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 12px;
+            color: #8f95b2;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            margin-bottom: 14px;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid #2a2e43;
+            background: #0d0f18;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+        }
+        input[type="text"]:focus {
+            border-color: #ff3366;
+        }
+        button {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            border: none;
+            background: linear-gradient(135deg, #ff3366, #ff6b6b);
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: opacity 0.3s;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .result-box {
+            margin-top: 20px;
+            display: none;
+        }
+        .btn-download {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            padding: 12px;
+            background: #22c55e;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
+            text-align: center;
+        }
+        .render-section {
+            margin-top: 18px;
+            padding-top: 15px;
+            border-top: 1px solid #2a2e43;
+        }
+        .render-controls {
+            display: flex;
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .render-controls select {
+            flex: 1;
+            background: #0d0f18;
+        }
+        .btn-render {
+            flex: 1.5;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            padding: 10px;
+            font-size: 13px;
+        }
+        .progress-text {
+            font-size: 12px;
+            color: #fbbf24;
+            margin-top: 8px;
+            text-align: center;
+        }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 11px;
+            color: #5c6282;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="lang-bar">
+        <select id="langSelect" onchange="changeLanguage()">
+            <option value="en">🌐 English</option>
+            <option value="tl">🇵🇭 Tagalog</option>
+            <option value="zh">🇨🇳 中文 (Chinese)</option>
+        </select>
+    </div>
+
+    <div class="container">
+        <h2 id="appTitle">TikTok HD Downloader</h2>
+        <div class="subtitle" id="appSubtitle">Direct 1080p & Custom Renderer • By Lim3rd</div>
+        
+        <div class="input-group">
+            <input type="text" id="videoUrl" placeholder="Paste TikTok video link here...">
+        </div>
+        <button id="actionBtn" onclick="fetchVideo()">Fetch Video</button>
+
+        <div class="result-box" id="resultBox">
+            <p id="statusText" style="font-size: 13px; color: #a5b4fc; text-align: center;"></p>
+            
+            <a id="hd1080Btn" class="btn-download" href="#" target="_blank" style="display:none;">⚡ Direct 1080p HD (No Watermark)</a>
+            <a id="sdBtn" class="btn-download" href="#" target="_blank" style="display:none; background: #0ea5e9;">📱 Standard HD (Fast Save)</a>
+            <a id="audioBtn" class="btn-download" href="#" target="_blank" style="display:none; background: #64748b;">🎵 Audio Only (MP3)</a>
+
+            <div class="render-section" id="renderSection" style="display:none;">
+                <p style="font-size: 12px; color: #cbd5e1; text-align: center;">🎬 Custom Resolution Renderer (In-Browser)</p>
+                <div class="render-controls">
+                    <select id="resSelect">
+                        <option value="1080">1080p Full HD</option>
+                        <option value="720">720p HD</option>
+                        <option value="480">480p Data Saver</option>
+                    </select>
+                    <button class="btn-render" id="renderBtn" onclick="renderCustomVideo()">Render & Save</button>
+                </div>
+                <p class="progress-text" id="renderStatus"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">Created by Lim3rd &bull; Client-Side Engine</div>
+
+    <script src="script.js"></script>
+</body>
+  </html>
+  
